@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🚀 Tech Stack Used
+Layer	Technology
+Frontend	Next.js (React)
+Backend	Next.js server actions
+Authentication	next cokkee session
+Database	Prisma with mysql
+Styling	Tailwind CSS and shadcn 
+Package Manager	npm
 
-## Getting Started
 
-First, run the development server:
+🛡️ Authentication Flow
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The authentication flow in this project follows a Signup → Login → Dashboard pattern:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+User Signup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+New users first register using the Signup page by providing required details (e.g., name, email, password).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+On successful signup, the user is automatically redirected to the Login page.
 
-## Learn More
+User Login
 
-To learn more about Next.js, take a look at the following resources:
+The user logs in using their registered email and password.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Credentials are sent to the backend authentication API.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The backend validates the credentials against the database.
 
-## Deploy on Vercel
+Session / Token Creation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+After successful validation, an authentication token or session is created.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The token/session is securely stored (e.g., HTTP-only cookies or session storage).
+
+Redirect to Dashboard
+
+Once authenticated, the user is redirected to the Dashboard.
+
+The dashboard is a protected route and can only be accessed by logged-in users.
+
+Protected Routes
+
+Any attempt to access the dashboard without authentication redirects the user back to the Login page.
+
+
+📊 Database Schema Explanation
+
+Here’s a simple conceptual 
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  tasks     Task[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  status    TaskStatus @default(TODO)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
