@@ -1,0 +1,1 @@
+{\n  "$schema": "https://openapi.vercel.sh/vercel.json",\n  "version": 2,\n  "buildCommand": "npm run build",\n  "installCommand": "npm install",\n  "outputDirectory": "dist",\n  "framework": "other",\n  "env": [],\n  "build": {\n    "env": {\n      "NODE_VERSION": "18.x"\n    }\n  },\n  "functions": {\n    "api/**/*.ts": {\n      "runtime": "nodejs18.x"\n    }\n  }\n}
